@@ -36,6 +36,7 @@ namespace NumberGenerator.Logic
                 CountOfNumbersToWaitFor = countOfNumbersToWaitFor;
 
                 //_numberGenerator.Attach(this);
+                _numberGenerator.NumberChanged += new RandomNumberGenerator.NumberChangedHandler(OnNextNumber);
             }
         }
 

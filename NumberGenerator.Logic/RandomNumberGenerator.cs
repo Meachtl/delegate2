@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace NumberGenerator.Logic
@@ -25,13 +26,15 @@ namespace NumberGenerator.Logic
 
         #region Fields
 
+        private int _delay;
+
         public delegate void NumberChangedHandler(int number);
 
         public NumberChangedHandler NumberChanged { get; set; }
 
         //List<IObserver> _observers;
 
-        Random rnd;
+        private Random rnd;
 
         public int Delay { get; }
         public int Seed { get; }
@@ -130,26 +133,26 @@ namespace NumberGenerator.Logic
         /// Benachrichtigt die registrierten Beobachter, dass eine neue Zahl generiert wurde.
         /// </summary>
         /// <param name="number">Die generierte Zahl.</param>
-        public void NotifyObservers(int number)
-        {
-            //foreach (IObserver observer in _observers.ToList())
-            //{
-            //    observer.OnNextNumber(number);
-            //}
+        //public void NotifyObservers(int number)
+        //{
+        //    //foreach (IObserver observer in _observers.ToList())
+        //    //{
+        //    //    observer.OnNextNumber(number);
+        //    //}
 
-            if (numberChanged  != null)
-            {
-                numberChanged(number);
-            }
+        //    if (numberChanged  != null)
+        //    {
+        //        numberChanged(number);
+        //    }
 
-        }
+        //}
 
         #endregion
 
-        public override string ToString()
-        {
-            return string.Format($">> NumberGenerator: Number generated: {RandomNumber}");
-        }
+        //public override string ToString()
+        //{
+        //    return string.Format($">> NumberGenerator: Number generated: {RandomNumber}");
+        //}
 
         /// <summary>
         /// Started the Nummer-Generierung.
@@ -166,9 +169,10 @@ namespace NumberGenerator.Logic
 
             while (NumberChanged != null)
             {
-                NumberChanged(rnd.Next(RANDOM_MIN_VALUE, RANDOM_MAX_VALUE));
+                NumberChanged(_rnd.Next(RANDOM_MIN_VALUE, RANDOM_MAX_VALUE));
                 Console.WriteLine(ToString());
-                NotifyObservers(RandomNumber);
+                Thread.Sleep(_delay);
+                //NotifyObservers(RandomNumber);
             }
             
         }
