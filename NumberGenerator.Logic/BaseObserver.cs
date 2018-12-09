@@ -10,9 +10,7 @@ namespace NumberGenerator.Logic
     public class BaseObserver
     {
         #region Fields
-
         private readonly RandomNumberGenerator _numberGenerator;
-
         #endregion
 
         #region Properties
