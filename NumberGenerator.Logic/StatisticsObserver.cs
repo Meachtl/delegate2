@@ -8,7 +8,7 @@ namespace NumberGenerator.Logic
     public class StatisticsObserver : BaseObserver
     {
         #region Fields
-        private int _countRandomNumbers = 0;
+        //private int _countRandomNumbers = 0;
         #endregion
 
         #region Properties
@@ -43,7 +43,7 @@ namespace NumberGenerator.Logic
 
         #region Constructors
 
-        public StatisticsObserver(IObservable numberGenerator, int countOfNumbersToWaitFor) : base(numberGenerator, countOfNumbersToWaitFor)
+        public StatisticsObserver(RandomNumberGenerator numberGenerator, int countOfNumbersToWaitFor) : base(numberGenerator, countOfNumbersToWaitFor)
         {
             Min = int.MaxValue;
             Max = int.MinValue;

@@ -11,7 +11,7 @@ namespace NumberGenerator.Logic
     /// Zwischen der Generierung der einzelnen Zufallsnzahlen erfolgt jeweils eine Pause.
     /// Die Generierung erfolgt so lange, solange Beobachter registriert sind.
     /// </summary>
-    public class RandomNumberGenerator : IObservable
+    public class RandomNumberGenerator
     {
         #region Constants
 
@@ -25,12 +25,18 @@ namespace NumberGenerator.Logic
 
         #region Fields
 
-        List<IObserver> _observers;
+        public delegate void NumberChangedHandler(int number);
+
+        public NumberChangedHandler NumberChanged { get; set; }
+
+        //List<IObserver> _observers;
 
         Random rnd;
 
         public int Delay { get; }
         public int Seed { get; }
+
+        private Random _rnd;
 
         public int RandomNumber { get; private set; }
 
@@ -61,12 +67,12 @@ namespace NumberGenerator.Logic
         /// <param name="seed">Enthält die Initialisierung der Zufallszahlengenerierung.</param>
         public RandomNumberGenerator(int delay, int seed)
         {
-            _observers = new List<IObserver>();
+            //_observers = new List<IObserver>();
 
             Delay = delay;
             Seed = seed;
 
-            rnd = new Random(seed);
+            _rnd= new Random(seed);
         }
 
         #endregion
@@ -79,46 +85,46 @@ namespace NumberGenerator.Logic
         /// Fügt einen Beobachter hinzu.
         /// </summary>
         /// <param name="observer">Der Beobachter, welcher benachricht werden möchte.</param>
-        public void Attach(IObserver observer)
-        {
+        //public void Attach(IObserver observer)
+        //{
 
-            if (observer != null)
-            {
-                if (_observers.Contains(observer))
-                {
-                    throw new InvalidOperationException("Observer kann nicht zwei Mal hinzugefügt werden!");
-                }
-                _observers.Add(observer);
-            }
-            else
-            {
-                throw new ArgumentNullException("Es können keine null-Werte übergeben werden!");
-            }
-        }
+        //    if (observer != null)
+        //    {
+        //        if (_observers.Contains(observer))
+        //        {
+        //            throw new InvalidOperationException("Observer kann nicht zwei Mal hinzugefügt werden!");
+        //        }
+        //        _observers.Add(observer);
+        //    }
+        //    else
+        //    {
+        //        throw new ArgumentNullException("Es können keine null-Werte übergeben werden!");
+        //    }
+        //}
 
         /// <summary>
         /// Entfernt einen Beobachter.
         /// </summary>
         /// <param name="observer">Der Beobachter, welcher nicht mehr benachrichtigt werden möchte</param>
-        public void Detach(IObserver observer)
-        {
-            if (observer != null)
-            {
-                if (_observers.Contains(observer))
-                {
-                    _observers.Remove(observer);
-                }
-                else
-                {
-                    throw new InvalidOperationException("Observer kann nicht zwei Mal gelöscht werden!");
-                }
+        //public void Detach(IObserver observer)
+        //{
+        //    if (observer != null)
+        //    {
+        //        if (_observers.Contains(observer))
+        //        {
+        //            _observers.Remove(observer);
+        //        }
+        //        else
+        //        {
+        //            throw new InvalidOperationException("Observer kann nicht zwei Mal gelöscht werden!");
+        //        }
                 
-            }
-            else
-            {
-                throw new ArgumentNullException("Es können keine null-Werte von der Liste entfernt werden!");
-            }
-        }
+        //    }
+        //    else
+        //    {
+        //        throw new ArgumentNullException("Es können keine null-Werte von der Liste entfernt werden!");
+        //    }
+        //}
 
         /// <summary>
         /// Benachrichtigt die registrierten Beobachter, dass eine neue Zahl generiert wurde.
@@ -126,10 +132,16 @@ namespace NumberGenerator.Logic
         /// <param name="number">Die generierte Zahl.</param>
         public void NotifyObservers(int number)
         {
-            foreach (IObserver observer in _observers.ToList())
+            //foreach (IObserver observer in _observers.ToList())
+            //{
+            //    observer.OnNextNumber(number);
+            //}
+
+            if (numberChanged  != null)
             {
-                observer.OnNextNumber(number);
+                numberChanged(number);
             }
+
         }
 
         #endregion
@@ -145,12 +157,20 @@ namespace NumberGenerator.Logic
         /// </summary>
         public void StartNumberGeneration()
         {
-            while (_observers.Count > 0)
+            //while (_observers.Count > 0)
+            //{
+            //    RandomNumber = rnd.Next(RANDOM_MIN_VALUE, RANDOM_MAX_VALUE);
+            //    Console.WriteLine(ToString());
+            //    NotifyObservers(RandomNumber);
+            //}
+
+            while (NumberChanged != null)
             {
-                RandomNumber = rnd.Next(RANDOM_MIN_VALUE, RANDOM_MAX_VALUE);
+                NumberChanged(rnd.Next(RANDOM_MIN_VALUE, RANDOM_MAX_VALUE));
                 Console.WriteLine(ToString());
                 NotifyObservers(RandomNumber);
             }
+            
         }
 
         #endregion
