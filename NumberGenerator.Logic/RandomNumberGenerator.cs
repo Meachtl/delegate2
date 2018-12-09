@@ -25,24 +25,15 @@ namespace NumberGenerator.Logic
         #endregion
 
         #region Fields
+        private Random _rnd;
+        #endregion
 
-        private int _delay;
-
+        #region Properties
         public delegate void NumberChangedHandler(int number);
-
         public NumberChangedHandler NumberChanged { get; set; }
-
-        //List<IObserver> _observers;
-
-        private Random rnd;
-
         public int Delay { get; }
         public int Seed { get; }
-
-        private Random _rnd;
-
-        public int RandomNumber { get; private set; }
-
+        //public int RandomNumber { get; private set; }
         #endregion
 
         #region Constructors
@@ -170,8 +161,8 @@ namespace NumberGenerator.Logic
             while (NumberChanged != null)
             {
                 NumberChanged(_rnd.Next(RANDOM_MIN_VALUE, RANDOM_MAX_VALUE));
-                Console.WriteLine(ToString());
-                Thread.Sleep(_delay);
+                Console.WriteLine("New number generated!");
+                Thread.Sleep(Delay);
                 //NotifyObservers(RandomNumber);
             }
             

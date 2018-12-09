@@ -115,7 +115,7 @@ namespace NumberGenerator.Test
             numberGenerator.StartNumberGeneration();
 
             //Act
-            int actualMin = statisticsObserver.Min;
+            int? actualMin = statisticsObserver.Min;
 
             //Assert
             Assert.AreEqual(30, actualMin);
@@ -130,7 +130,7 @@ namespace NumberGenerator.Test
             numberGenerator.StartNumberGeneration();
 
             //Act
-            int actualMax = statisticsObserver.Max;
+            int? actualMax = statisticsObserver.Max;
 
             //Assert
             Assert.AreEqual(950, actualMax);

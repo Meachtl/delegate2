@@ -16,12 +16,12 @@ namespace NumberGenerator.Logic
         /// <summary>
         /// Enthält das Minimum der generierten Zahlen.
         /// </summary>
-        public int Min { get; private set; }
+        public int? Min { get; private set; }
 
         /// <summary>
         /// Enthält das Maximum der generierten Zahlen.
         /// </summary>
-        public int Max { get; private set; }
+        public int? Max { get; private set; }
 
         /// <summary>
         /// Enthält die Summe der generierten Zahlen.
@@ -45,8 +45,8 @@ namespace NumberGenerator.Logic
 
         public StatisticsObserver(RandomNumberGenerator numberGenerator, int countOfNumbersToWaitFor) : base(numberGenerator, countOfNumbersToWaitFor)
         {
-            Min = int.MaxValue;
-            Max = int.MinValue;
+            //Min = int.MaxValue;
+            //Max = int.MinValue;
             Sum = 0;
         }
 
@@ -63,6 +63,15 @@ namespace NumberGenerator.Logic
 
         public override void OnNextNumber(int number)
         {
+            if (!Min.HasValue) // Min has no value
+            {
+                Min = number;
+            }
+            if (!Max.HasValue) // Max has no value
+            {
+                Max = number;
+            }
+
             if (number < Min)
             {
                 Min = number;
